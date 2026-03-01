@@ -1,0 +1,953 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hotel Bellavista · Reservas 2026</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--cream:#F5F0E8;--dark:#1A1209;--gold:#C9A84C;--gold-light:#E8D5A0;--warm:#8B6914;--muted:#6B5D3F;--red:#C0392B;--green:#2E7D5C;--blue:#2563A8}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;background:var(--cream);color:var(--dark);min-height:100vh}
+header{background:var(--dark);padding:16px 40px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--gold)}
+.logo{font-family:Georgia,serif;font-size:1.4rem;color:var(--gold);letter-spacing:.08em}
+.logo span{font-style:italic;color:#fff}
+.tagline{font-size:.65rem;letter-spacing:.2em;color:var(--gold-light);text-transform:uppercase;margin-top:3px}
+.tabs-nav{background:var(--dark);display:flex;border-bottom:1px solid rgba(201,168,76,.35);padding:0 40px;gap:2px;overflow-x:auto}
+.tab-btn{background:none;border:none;padding:12px 18px;font-family:inherit;font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:rgba(201,168,76,.5);cursor:pointer;border-bottom:2px solid transparent;transition:all .2s;white-space:nowrap}
+.tab-btn:hover{color:var(--gold)}
+.tab-btn.active{color:var(--gold);border-bottom-color:var(--gold)}
+main{max-width:1500px;margin:0 auto;padding:28px 20px}
+.tab-panel{display:none}
+.tab-panel.active{display:flex;flex-direction:column;gap:22px}
+.card{background:#fff;border-radius:2px;box-shadow:0 4px 24px rgba(0,0,0,.07);overflow:hidden}
+.card-header{background:var(--dark);padding:14px 24px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px}
+.card-title{font-family:Georgia,serif;font-size:.95rem;color:var(--gold);font-weight:400}
+.card-body{padding:22px}
+.form-grid{display:grid;grid-template-columns:1fr 340px;gap:20px;align-items:start}
+.section-label{font-size:.6rem;letter-spacing:.24em;text-transform:uppercase;color:var(--gold);font-weight:600;margin:16px 0 10px;padding-bottom:4px;border-bottom:1px solid var(--gold-light)}
+.section-label:first-child{margin-top:0}
+.fg2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
+.field{display:flex;flex-direction:column;gap:4px}
+label{font-size:.63rem;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);font-weight:500}
+.sublbl{font-size:.57rem;color:var(--gold);margin-left:4px;text-transform:none;letter-spacing:.04em}
+input[type=date],input[type=text],input[type=email],input[type=tel],input[type=number],select{border:1px solid #DDD6C8;background:var(--cream);padding:9px 11px;font-family:inherit;font-size:.85rem;color:var(--dark);border-radius:1px;outline:none;transition:border-color .2s;width:100%}
+input:focus,select:focus{border-color:var(--gold)}
+input.err,select.err{border-color:var(--red)!important}
+.ferr{font-size:.65rem;color:var(--red);margin-top:2px;display:none}
+.ferr.show{display:block}
+.counter-group{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:12px}
+.counter-field{display:flex;flex-direction:column;gap:6px}
+.counter-ctrl{display:flex;align-items:center;border:1px solid #DDD6C8;background:var(--cream);border-radius:1px;overflow:hidden}
+.cbtn{width:34px;height:38px;border:none;background:none;font-size:1.1rem;cursor:pointer;color:var(--gold);font-weight:700;transition:background .15s;flex-shrink:0}
+.cbtn:hover{background:var(--gold-light)}
+.cval{flex:1;text-align:center;font-size:.92rem;font-weight:500;color:var(--dark)}
+.ages-section{margin-bottom:12px}
+.ages-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(100px,1fr));gap:8px;margin-top:8px}
+.age-field{display:flex;flex-direction:column;gap:4px}
+.toggle-row{display:flex;align-items:center;justify-content:space-between;padding:11px 13px;background:var(--cream);border:1px solid #DDD6C8;border-radius:2px;cursor:pointer;transition:border-color .2s;margin-bottom:12px}
+.toggle-row:hover{border-color:var(--gold)}
+.toggle-row.active{border-color:var(--gold);background:rgba(201,168,76,.06)}
+.toggle-label{font-size:.8rem;font-weight:500}
+.toggle-sub{font-size:.7rem;color:var(--muted);margin-top:2px}
+.toggle-sw{width:38px;height:21px;background:#CCC;border-radius:11px;position:relative;transition:background .2s;flex-shrink:0}
+.toggle-sw::after{content:'';position:absolute;top:3px;left:3px;width:15px;height:15px;border-radius:50%;background:#fff;transition:transform .2s;box-shadow:0 1px 3px rgba(0,0,0,.2)}
+.toggle-sw.on{background:var(--gold)}
+.toggle-sw.on::after{transform:translateX(17px)}
+.avail-ind{display:none;align-items:center;gap:8px;font-size:.76rem;padding:8px 11px;border-radius:2px;margin-bottom:10px}
+.avail-ind.show{display:flex}
+.avail-ind.ok{background:rgba(46,125,92,.1);color:var(--green)}
+.avail-ind.warn{background:rgba(192,57,43,.1);color:var(--red)}
+.dot{width:8px;height:8px;border-radius:50%;background:currentColor;flex-shrink:0}
+.room-options{display:flex;flex-direction:column;gap:9px;margin-bottom:14px}
+.room-option{border:2px solid #DDD6C8;border-radius:3px;padding:13px 15px;cursor:pointer;transition:all .2s;position:relative}
+.room-option:hover{border-color:var(--gold-light)}
+.room-option.selected{border-color:var(--gold);background:rgba(201,168,76,.05)}
+.room-option.unavailable{opacity:.45;cursor:not-allowed;border-style:dashed}
+.ro-header{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:5px}
+.ro-name{font-weight:600;font-size:.88rem}
+.ro-price{font-family:Georgia,serif;font-size:1.1rem;color:var(--gold)}
+.ro-price-sub{font-size:.68rem;color:var(--muted);text-align:right;margin-top:1px}
+.ro-tags{display:flex;gap:5px;flex-wrap:wrap}
+.ro-tag{font-size:.6rem;padding:2px 7px;border-radius:10px;background:rgba(201,168,76,.1);color:var(--warm);border:1px solid rgba(201,168,76,.2)}
+.ro-tag.full{background:rgba(192,57,43,.08);color:var(--red);border-color:rgba(192,57,43,.2)}
+.ro-tag.ok{background:rgba(46,125,92,.08);color:var(--green);border-color:rgba(46,125,92,.2)}
+.ro-radio{position:absolute;top:13px;right:14px;width:17px;height:17px;border-radius:50%;border:2px solid #DDD;background:#fff;transition:all .2s}
+.room-option.selected .ro-radio{border-color:var(--gold);background:var(--gold);box-shadow:inset 0 0 0 3px #fff}
+.price-preview{margin:12px 0;padding:14px;background:var(--cream);border-left:3px solid var(--gold);display:none}
+.price-preview.show{display:block}
+.pr{display:flex;justify-content:space-between;font-size:.78rem;color:var(--muted);margin-bottom:4px}
+.pr.sub{padding-left:11px;font-size:.73rem}
+.pr.bold{font-weight:600;color:var(--dark);margin-bottom:6px}
+.pr-div{border:none;border-top:1px dashed #DDD;margin:6px 0}
+.pr-total{display:flex;justify-content:space-between;font-size:1.05rem;font-weight:700;color:var(--dark);border-top:2px solid #DDD6C8;padding-top:9px;margin-top:7px}
+.pr-total .amount{color:var(--gold);font-family:Georgia,serif}
+.btn-primary{width:100%;padding:14px;background:var(--gold);color:var(--dark);border:none;font-family:inherit;font-size:.81rem;font-weight:600;letter-spacing:.18em;text-transform:uppercase;cursor:pointer;transition:background .2s;border-radius:1px}
+.btn-primary:hover{background:var(--warm);color:#fff}
+.spinner{display:inline-block;width:13px;height:13px;border:2px solid currentColor;border-top-color:transparent;border-radius:50%;animation:spin .7s linear infinite;vertical-align:middle;margin-right:5px}
+@keyframes spin{to{transform:rotate(360deg)}}
+.estatus{margin-top:12px;display:none}
+.estatus.show{display:block}
+.estatus-sending{background:rgba(37,99,168,.07);border:1px solid rgba(37,99,168,.3);color:var(--blue);padding:12px;border-radius:2px;font-size:.79rem;line-height:1.8}
+.estatus-done{background:rgba(46,125,92,.07);border:1px solid var(--green);color:var(--green);padding:12px;border-radius:2px;font-size:.79rem;line-height:1.8}
+.estatus-err{background:rgba(192,57,43,.07);border:1px solid var(--red);color:var(--red);padding:12px;border-radius:2px;font-size:.79rem;line-height:1.8}
+.right-panel{display:flex;flex-direction:column;gap:16px}
+.cupos-panel{padding:0}
+.cupos-row{display:flex;align-items:center;justify-content:space-between;padding:9px 16px;border-bottom:1px solid #F5F0E8;font-size:.8rem}
+.cupos-row:last-child{border-bottom:none}
+.cupos-name{font-weight:500;min-width:160px}
+.cupos-bar{flex:1;margin:0 14px;height:5px;background:#EEE9E0;border-radius:3px;overflow:hidden}
+.cupos-fill{height:100%;border-radius:3px;transition:width .5s}
+.cupos-nums{font-size:.76rem;color:var(--muted);white-space:nowrap}
+.res-list{padding:6px 16px;max-height:320px;overflow-y:auto}
+.res-item{padding:8px 0;border-bottom:1px solid #EEE9E0}
+.res-item:last-child{border-bottom:none}
+.rh{display:flex;justify-content:space-between;align-items:flex-start;gap:8px}
+.rname{font-weight:500;color:var(--dark);font-size:.8rem}
+.rid{font-size:.63rem;color:var(--gold);font-family:Georgia,serif}
+.rprice{font-family:Georgia,serif;color:var(--gold);font-size:.88rem;flex-shrink:0}
+.rmeta{color:var(--muted);font-size:.7rem;margin-top:2px}
+.rtags{display:flex;gap:5px;margin-top:4px;flex-wrap:wrap;align-items:center}
+.rtag{font-size:.6rem;padding:2px 6px;border-radius:10px;background:rgba(201,168,76,.12);color:var(--warm);border:1px solid rgba(201,168,76,.2)}
+.rtag.bf{background:rgba(37,99,168,.08);color:var(--blue);border-color:rgba(37,99,168,.2)}
+.btn-cancel{background:none;border:1px solid #DDD;color:var(--muted);font-size:.65rem;padding:2px 7px;cursor:pointer;border-radius:1px;font-family:inherit;transition:all .2s}
+.btn-cancel:hover{border-color:var(--red);color:var(--red)}
+.empty{color:var(--muted);font-size:.77rem;text-align:center;padding:18px 0;font-style:italic}
+
+/* ── CALENDARIO ── */
+.cal-nav{display:flex;align-items:center;gap:12px}
+.cal-nav-btn{background:none;border:1px solid rgba(201,168,76,.4);color:var(--gold);width:27px;height:27px;border-radius:1px;cursor:pointer;font-size:1rem;transition:all .2s;display:flex;align-items:center;justify-content:center}
+.cal-nav-btn:hover{background:var(--gold);color:var(--dark)}
+.cal-month-label{font-family:Georgia,serif;font-size:.9rem;color:#fff;min-width:140px;text-align:center}
+.cal-type-tabs{padding:11px 24px;display:flex;gap:7px;flex-wrap:wrap;border-bottom:1px solid #EEE9E0}
+.cal-type-btn{font-size:.68rem;padding:3px 11px;border-radius:20px;border:1px solid #DDD;background:none;cursor:pointer;font-family:inherit;color:var(--muted);transition:all .2s}
+.cal-type-btn.active{background:var(--gold);color:var(--dark);border-color:var(--gold);font-weight:600}
+.cal-legend{padding:9px 24px;display:flex;gap:12px;flex-wrap:wrap;border-bottom:1px solid #EEE9E0}
+.leg-item{display:flex;align-items:center;gap:5px;font-size:.68rem;color:var(--muted)}
+.leg-sq{width:11px;height:11px;border-radius:2px}
+.cal-grid-wrap{padding:16px 24px 20px;overflow-x:auto}
+.cal-grid{width:100%;border-collapse:collapse}
+.cal-grid th{font-size:.64rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);padding:5px 3px;text-align:center;font-weight:500}
+.cal-cell{width:14.28%;padding:2px;vertical-align:top}
+.day-box{border-radius:3px;padding:5px 3px 4px;text-align:center;min-height:52px;display:flex;flex-direction:column;align-items:center;gap:2px;border:1px solid transparent;transition:transform .1s;cursor:default}
+.day-box:hover:not(.empty-day):not(.av-past){transform:scale(1.07);z-index:2;position:relative}
+.day-box.empty-day{background:transparent!important}
+.day-num{font-size:.75rem;font-weight:600}
+.day-avail{font-size:.68rem;font-weight:500}
+.day-label{font-size:.53rem;text-transform:uppercase;letter-spacing:.05em;opacity:.8}
+.day-box.today-mark{border-color:var(--gold)!important;box-shadow:0 0 0 1px var(--gold)}
+.av-10{background:rgba(26,92,58,.16);color:#1a5c3a}
+.av-7{background:rgba(46,125,92,.14);color:#1a6844}
+.av-4{background:rgba(217,119,6,.14);color:#92400e}
+.av-1{background:rgba(180,83,9,.18);color:#92400e}
+.av-0{background:rgba(127,29,29,.14);color:#991b1b}
+.av-past{background:#F0EBE1;color:#B0A080}
+.av-noseason{background:#F0EBE1;color:#B0A080}
+
+/* ── TABLAS PRECIOS / CUPOS ── */
+.pc-controls{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.pc-month-nav{display:flex;align-items:center;gap:8px}
+.pc-nav-btn{background:none;border:1px solid rgba(201,168,76,.4);color:var(--gold);width:28px;height:28px;border-radius:1px;cursor:pointer;font-size:1.1rem;display:flex;align-items:center;justify-content:center;transition:all .2s}
+.pc-nav-btn:hover{background:var(--gold);color:var(--dark)}
+.pc-month-lbl{font-family:Georgia,serif;color:#fff;font-size:.9rem;min-width:130px;text-align:center}
+.btn-save{background:var(--gold);color:var(--dark);border:none;padding:8px 16px;font-family:inherit;font-size:.73rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;cursor:pointer;border-radius:1px;transition:background .2s}
+.btn-save:hover{background:var(--warm);color:#fff}
+.save-ok{font-size:.73rem;color:#4ade80;opacity:0;transition:opacity .4s;font-weight:600}
+.save-ok.show{opacity:1}
+.pc-info{font-size:.7rem;color:var(--gold-light);opacity:.8}
+.pc-wrap{overflow-x:auto;max-height:70vh;overflow-y:auto}
+.pc-table{border-collapse:collapse;font-size:.78rem;white-space:nowrap}
+.pc-table thead{position:sticky;top:0;z-index:5}
+.pc-table th{background:var(--dark);color:var(--gold-light);padding:6px 4px;text-align:center;font-size:.6rem;letter-spacing:.08em;border:1px solid rgba(201,168,76,.15);font-weight:500;min-width:48px}
+.pc-table th.apt-th{text-align:left;padding-left:12px;min-width:175px;position:sticky;left:0;z-index:6;background:var(--dark)}
+.pc-table td{border:1px solid #E8E3DA;padding:0;vertical-align:middle}
+.pc-table td.apt-td{background:#FDFAF5;font-weight:600;font-size:.79rem;padding:0 12px;white-space:nowrap;position:sticky;left:0;z-index:1;border-right:2px solid #DDD6C8;height:38px}
+.pc-table tr:nth-child(even) td.apt-td{background:#F5F0E8}
+.pc-cell{width:100%;height:38px;border:none;background:transparent;text-align:center;font-family:inherit;font-size:.77rem;color:var(--dark);padding:0 2px;outline:none;cursor:pointer}
+.pc-cell:hover{background:rgba(201,168,76,.08)}
+.pc-cell:focus{background:rgba(201,168,76,.18);color:var(--dark);font-weight:600}
+.pc-cell.out{background:#F0EBE1;color:#B0A080;cursor:not-allowed}
+.pc-cell.edited{color:var(--warm);font-weight:700}
+.pc-table tr:nth-child(even) td:not(.apt-td){background:rgba(245,240,232,.3)}
+.wk{background:rgba(201,168,76,.07)!important}
+.td-today{outline:2px solid var(--gold);outline-offset:-2px}
+
+/* ── BUSCADOR ── */
+.search-bar{display:flex;gap:10px;margin-bottom:16px}
+.search-wrap{position:relative;flex:1}
+.search-wrap input{width:100%;padding:10px 14px;border:1px solid #DDD6C8;background:var(--cream);font-family:inherit;font-size:.85rem;color:var(--dark);border-radius:1px;outline:none}
+.search-wrap input:focus{border-color:var(--gold)}
+.btn-sec{background:none;border:1px solid #DDD;color:var(--muted);padding:0 14px;border-radius:1px;cursor:pointer;font-family:inherit;font-size:.76rem;transition:all .2s}
+.btn-sec:hover{border-color:var(--gold);color:var(--dark)}
+.search-count{font-size:.72rem;color:var(--muted);margin-bottom:11px}
+.stbl{width:100%;border-collapse:collapse}
+.stbl th{font-size:.61rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);padding:7px 9px;text-align:left;border-bottom:1px solid #EEE9E0;background:rgba(245,240,232,.6);font-weight:500}
+.stbl td{padding:9px;font-size:.79rem;border-bottom:1px solid #F5F0E8;vertical-align:middle}
+.stbl tr:hover td{background:rgba(201,168,76,.04)}
+.id-badge{font-family:Georgia,serif;background:rgba(201,168,76,.12);color:var(--warm);padding:2px 7px;border-radius:2px;font-size:.78rem;white-space:nowrap}
+.match-hl{background:rgba(201,168,76,.35);border-radius:2px;padding:0 2px}
+.td-price{font-family:Georgia,serif;color:var(--gold);white-space:nowrap}
+.badge{display:inline-flex;align-items:center;gap:4px;font-size:.63rem;padding:2px 7px;border-radius:10px;white-space:nowrap}
+.badge-active{background:rgba(46,125,92,.1);color:var(--green);border:1px solid rgba(46,125,92,.25)}
+.badge-past{background:#F0EBE1;color:var(--muted);border:1px solid #DDD}
+.badge-upcoming{background:rgba(37,99,168,.08);color:var(--blue);border:1px solid rgba(37,99,168,.2)}
+.btn-sm{background:none;border:1px solid #DDD;color:var(--muted);font-size:.63rem;padding:3px 7px;cursor:pointer;border-radius:1px;font-family:inherit;transition:all .2s}
+.btn-sm:hover{border-color:var(--red);color:var(--red)}
+
+/* ── ESTADÍSTICAS ── */
+.stats-controls{display:flex;gap:11px;flex-wrap:wrap;align-items:flex-end;margin-bottom:20px}
+.stats-controls .field{min-width:120px}
+.btn-stats{background:var(--gold);color:var(--dark);border:none;padding:9px 16px;font-family:inherit;font-size:.75rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;cursor:pointer;border-radius:1px;transition:background .2s;white-space:nowrap;align-self:flex-end}
+.btn-stats:hover{background:var(--warm);color:#fff}
+.kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:13px;margin-bottom:20px}
+.kpi{background:var(--cream);border:1px solid #DDD6C8;border-radius:2px;padding:14px 16px}
+.kpi-lbl{font-size:.61rem;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+.kpi-val{font-family:Georgia,serif;font-size:1.45rem;color:var(--dark);line-height:1}
+.kpi-sub{font-size:.69rem;color:var(--muted);margin-top:4px}
+.kpi.hl .kpi-val{color:var(--gold)}
+.stbl2{width:100%;border-collapse:collapse}
+.stbl2 th{font-size:.6rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);padding:7px 11px;text-align:left;border-bottom:2px solid #EEE9E0;font-weight:500}
+.stbl2 th.r,.stbl2 td.r{text-align:right}
+.stbl2 td{padding:8px 11px;font-size:.79rem;border-bottom:1px solid #F5F0E8}
+.stbl2 tfoot td{font-weight:600;border-top:2px solid #DDD6C8;background:rgba(245,240,232,.8)}
+.bar-wrap2{width:100%;height:5px;background:#EEE9E0;border-radius:3px;overflow:hidden;margin-top:4px}
+.bar-fill2{height:100%;background:var(--gold);border-radius:3px}
+.chart-area{margin-top:22px}
+.chart-lbl{font-size:.66rem;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin-bottom:12px}
+.bar-chart{display:flex;align-items:flex-end;gap:5px;height:100px;border-bottom:1px solid #DDD6C8}
+.bar-col{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:4px}
+.bar-rect{width:100%;border-radius:2px 2px 0 0;background:var(--gold);position:relative;cursor:default;min-height:2px}
+.bar-rect:hover{background:var(--warm)}
+.bar-tip{display:none;position:absolute;top:-28px;left:50%;transform:translateX(-50%);background:var(--dark);color:#fff;font-size:.6rem;padding:3px 7px;border-radius:2px;white-space:nowrap;z-index:10}
+.bar-rect:hover .bar-tip{display:block}
+.bar-lbl{font-size:.56rem;color:var(--muted);text-transform:uppercase}
+
+@media(max-width:1000px){.form-grid{grid-template-columns:1fr}.kpi-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:700px){header,.tabs-nav{padding-left:16px;padding-right:16px}.kpi-grid{grid-template-columns:1fr}.counter-group{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body>
+<header>
+  <div>
+    <div class="logo">Hotel <span>Bellavista</span></div>
+    <div class="tagline">Motor de Reservas · Temporada 2026</div>
+  </div>
+  <div style="text-align:right">
+    <div style="color:var(--gold-light);font-size:.72rem;letter-spacing:.1em" id="occ-display">Cargando…</div>
+    <div style="color:var(--muted);font-size:.63rem;margin-top:3px;letter-spacing:.1em;text-transform:uppercase">01 May – 24 Oct 2026</div>
+  </div>
+</header>
+
+<div class="tabs-nav">
+  <button class="tab-btn active" onclick="switchTab('booking',this)">📋 Nueva Reserva</button>
+  <button class="tab-btn" onclick="switchTab('calendar',this)">📅 Disponibilidad</button>
+  <button class="tab-btn" onclick="switchTab('prices',this)">💶 Precios</button>
+  <button class="tab-btn" onclick="switchTab('quotas',this)">🏨 Cupos</button>
+  <button class="tab-btn" onclick="switchTab('search',this)">🔍 Buscador</button>
+  <button class="tab-btn" onclick="switchTab('stats',this)">📊 Estadísticas</button>
+</div>
+
+<main>
+
+<!-- ══ RESERVA ══ -->
+<div class="tab-panel active" id="tab-booking">
+  <div class="form-grid">
+    <div class="card">
+      <div class="card-header"><div class="card-title">Nueva Reserva</div></div>
+      <div class="card-body">
+        <div class="section-label">Datos del cliente</div>
+        <div class="fg2">
+          <div class="field"><label>Nombre *</label><input type="text" id="f-nombre" placeholder="Nombre"><div class="ferr" id="e-nombre">Obligatorio</div></div>
+          <div class="field"><label>Apellidos *</label><input type="text" id="f-apellido" placeholder="Apellidos"><div class="ferr" id="e-apellido">Obligatorio</div></div>
+        </div>
+        <div class="fg2">
+          <div class="field"><label>Email *</label><input type="email" id="f-email" placeholder="correo@ejemplo.com"><div class="ferr" id="e-email">Email inválido</div></div>
+          <div class="field"><label>Teléfono *</label><input type="tel" id="f-tel" placeholder="+34 600 000 000"><div class="ferr" id="e-tel">Obligatorio</div></div>
+        </div>
+        <div class="section-label">Fechas de estancia</div>
+        <div class="fg2">
+          <div class="field"><label>Llegada *</label><input type="date" id="f-checkin" onchange="onFormChange()"><div class="ferr" id="e-checkin">Selecciona fecha</div></div>
+          <div class="field"><label>Salida *</label><input type="date" id="f-checkout" onchange="onFormChange()"><div class="ferr" id="e-checkout">Debe ser posterior</div></div>
+        </div>
+        <div class="section-label">Ocupantes</div>
+        <div class="counter-group">
+          <div class="counter-field"><label>Adultos <span class="sublbl">≥15a</span></label><div class="counter-ctrl"><button class="cbtn" onclick="changeCount('adults',-1)">−</button><span class="cval" id="adults-val">1</span><button class="cbtn" onclick="changeCount('adults',+1)">+</button></div></div>
+          <div class="counter-field"><label>Niños <span class="sublbl">2–14a</span></label><div class="counter-ctrl"><button class="cbtn" onclick="changeCount('children',-1)">−</button><span class="cval" id="children-val">0</span><button class="cbtn" onclick="changeCount('children',+1)">+</button></div></div>
+          <div class="counter-field"><label>Bebés <span class="sublbl">0–1a</span></label><div class="counter-ctrl"><button class="cbtn" onclick="changeCount('babies',-1)">−</button><span class="cval" id="babies-val">0</span><button class="cbtn" onclick="changeCount('babies',+1)">+</button></div></div>
+        </div>
+        <div class="ages-section" id="ages-section" style="display:none">
+          <label>Edad de los niños (2–14) *</label>
+          <div class="ages-grid" id="ages-grid"></div>
+          <div class="ferr" id="e-ages">Indica la edad de todos los niños</div>
+        </div>
+        <div class="section-label">Desayuno</div>
+        <div class="toggle-row" id="bf-toggle" onclick="toggleBreakfast()">
+          <div><div class="toggle-label">☕ Añadir desayuno</div><div class="toggle-sub">18 €/adulto por noche · Niños gratis</div></div>
+          <div class="toggle-sw" id="bf-switch"></div>
+        </div>
+        <div class="avail-ind" id="avail-ind"><div class="dot"></div><span id="avail-text"></span></div>
+        <div id="room-options-wrap" style="display:none">
+          <div class="section-label">Apartamentos disponibles</div>
+          <div class="room-options" id="room-options"></div>
+          <div class="ferr" id="e-room">Selecciona un apartamento</div>
+        </div>
+        <div class="price-preview" id="price-preview"><div id="price-breakdown"></div><div class="pr-total"><span>TOTAL ESTANCIA</span><span class="amount" id="price-total"></span></div></div>
+        <button class="btn-primary" id="btn-book" onclick="makeReservation()" style="display:none">Confirmar y enviar confirmación ✉️</button>
+        <div class="estatus" id="estatus"></div>
+      </div>
+    </div>
+    <div class="right-panel">
+      <div class="card">
+        <div class="card-header"><div class="card-title">Cupos hoy</div></div>
+        <div class="cupos-panel" id="cupos-panel"></div>
+      </div>
+      <div class="card">
+        <div class="card-header"><div class="card-title">Reservas Recientes</div></div>
+        <div class="res-list" id="res-list"><div class="empty">No hay reservas aún</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ DISPONIBILIDAD ══ -->
+<div class="tab-panel" id="tab-calendar">
+  <div class="card">
+    <div class="card-header">
+      <div class="card-title">Disponibilidad</div>
+      <div class="cal-nav">
+        <button class="cal-nav-btn" onclick="navMonth(-1)">‹</button>
+        <div class="cal-month-label" id="cal-month-label"></div>
+        <button class="cal-nav-btn" onclick="navMonth(+1)">›</button>
+      </div>
+    </div>
+    <div class="cal-type-tabs" id="cal-type-tabs"></div>
+    <div class="cal-legend">
+      <div class="leg-item"><div class="leg-sq" style="background:#1a5c3a"></div>Mucha disponibilidad</div>
+      <div class="leg-item"><div class="leg-sq" style="background:#d97706"></div>Poca</div>
+      <div class="leg-item"><div class="leg-sq" style="background:#991b1b"></div>Completo</div>
+      <div class="leg-item"><div class="leg-sq" style="background:#B0A080"></div>Fuera temporada</div>
+    </div>
+    <div class="cal-grid-wrap">
+      <table class="cal-grid"><thead><tr><th>Lun</th><th>Mar</th><th>Mié</th><th>Jue</th><th>Vie</th><th>Sáb</th><th>Dom</th></tr></thead><tbody id="cal-body"></tbody></table>
+    </div>
+  </div>
+</div>
+
+<!-- ══ PRECIOS ══ -->
+<div class="tab-panel" id="tab-prices">
+  <div class="card">
+    <div class="card-header">
+      <div class="card-title">💶 Precios por Noche (€)</div>
+      <div class="pc-controls">
+        <div class="pc-month-nav">
+          <button class="pc-nav-btn" onclick="navPC('prices',-1)">‹</button>
+          <div class="pc-month-lbl" id="prices-lbl"></div>
+          <button class="pc-nav-btn" onclick="navPC('prices',+1)">›</button>
+        </div>
+        <button class="btn-save" onclick="savePC('prices')">💾 Guardar</button>
+        <span class="save-ok" id="prices-ok">✓ Guardado</span>
+        <span class="pc-info">Haz clic en una celda para editar</span>
+      </div>
+    </div>
+    <div class="pc-wrap" id="prices-wrap"></div>
+  </div>
+</div>
+
+<!-- ══ CUPOS ══ -->
+<div class="tab-panel" id="tab-quotas">
+  <div class="card">
+    <div class="card-header">
+      <div class="card-title">🏨 Cupos por Día</div>
+      <div class="pc-controls">
+        <div class="pc-month-nav">
+          <button class="pc-nav-btn" onclick="navPC('quotas',-1)">‹</button>
+          <div class="pc-month-lbl" id="quotas-lbl"></div>
+          <button class="pc-nav-btn" onclick="navPC('quotas',+1)">›</button>
+        </div>
+        <button class="btn-save" onclick="savePC('quotas')">💾 Guardar</button>
+        <span class="save-ok" id="quotas-ok">✓ Guardado</span>
+        <span class="pc-info">Haz clic en una celda para editar</span>
+      </div>
+    </div>
+    <div class="pc-wrap" id="quotas-wrap"></div>
+  </div>
+</div>
+
+<!-- ══ BUSCADOR ══ -->
+<div class="tab-panel" id="tab-search">
+  <div class="card">
+    <div class="card-header"><div class="card-title">Buscador de Reservas</div></div>
+    <div class="card-body">
+      <div class="search-bar">
+        <div class="search-wrap"><input type="text" id="search-input" placeholder="🔍 Buscar por nº, nombre o email…" oninput="doSearch()"></div>
+        <button class="btn-sec" onclick="clearSearch()">Limpiar</button>
+      </div>
+      <div class="search-count" id="search-count"></div>
+      <div style="overflow-x:auto">
+        <table class="stbl">
+          <thead><tr><th>Nº</th><th>Nombre</th><th>Email</th><th>Tel.</th><th>Apartamento</th><th>Llegada</th><th>Salida</th><th>Noches</th><th>Pax</th><th>Desayuno</th><th>Importe</th><th>Estado</th><th></th></tr></thead>
+          <tbody id="search-tbody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ ESTADÍSTICAS ══ -->
+<div class="tab-panel" id="tab-stats">
+  <div class="card">
+    <div class="card-header"><div class="card-title">📊 Estadísticas</div></div>
+    <div class="card-body">
+      <div class="stats-controls">
+        <div class="field"><label>Desde</label><input type="date" id="stats-from"></div>
+        <div class="field"><label>Hasta</label><input type="date" id="stats-to"></div>
+        <button class="btn-stats" onclick="renderStats()">Calcular</button>
+        <button class="btn-stats" style="background:var(--cream);color:var(--dark);border:1px solid #DDD" onclick="setStatsYear()">Temporada 2026</button>
+        <button class="btn-stats" style="background:var(--cream);color:var(--dark);border:1px solid #DDD" onclick="setStatsMonth()">Mes actual</button>
+      </div>
+      <div class="kpi-grid">
+        <div class="kpi hl"><div class="kpi-lbl">Ingresos totales</div><div class="kpi-val" id="kpi-total">—</div><div class="kpi-sub" id="kpi-tsub"></div></div>
+        <div class="kpi"><div class="kpi-lbl">Reservas</div><div class="kpi-val" id="kpi-count">—</div><div class="kpi-sub" id="kpi-csub"></div></div>
+        <div class="kpi"><div class="kpi-lbl">Noches vendidas</div><div class="kpi-val" id="kpi-nights">—</div><div class="kpi-sub" id="kpi-nsub"></div></div>
+        <div class="kpi"><div class="kpi-lbl">Ticket medio</div><div class="kpi-val" id="kpi-avg">—</div><div class="kpi-sub" id="kpi-asub"></div></div>
+      </div>
+      <div style="overflow-x:auto">
+        <table class="stbl2">
+          <thead><tr><th>Mes</th><th class="r">Reservas</th><th class="r">Noches</th><th class="r">Hab.</th><th class="r">Desayunos</th><th class="r">Total</th><th style="width:100px">Part.</th></tr></thead>
+          <tbody id="stats-tbody"></tbody><tfoot id="stats-tfoot"></tfoot>
+        </table>
+      </div>
+      <div class="chart-area"><div class="chart-lbl">Ingresos por mes (€)</div><div class="bar-chart" id="bar-chart"></div></div>
+    </div>
+  </div>
+</div>
+
+</main>
+
+<script>
+/* ══════════════════════════════════
+   CONFIGURACIÓN
+══════════════════════════════════ */
+const RESERVAS_EMAIL = 'manuel.bermin@gmail.com';
+const MAKE_WEBHOOK   = 'https://hook.eu2.make.com/4bla61qkma7baq7hk69pq1bqq9nhvjhe';
+const SEASON_START   = '2026-05-01';
+const SEASON_END     = '2026-10-24';
+const BF_ADULT       = 18;
+
+const MONTHS       = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
+const MONTHS_SHORT = ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
+const DAY_LETTERS  = ['D','L','M','X','J','V','S'];
+
+const ROOM_TYPES = [
+  { code:'EST',    name:'Estándar',              baseQuota:15, isCompat:(a,c,b)=>a>=1&&a<=2&&c<=3&&(a+c)<=4&&!(a===2&&c>2) },
+  { code:'EST_T',  name:'Estándar Triple',        baseQuota:10, isCompat:(a,c,b)=>a===3&&c<=1 },
+  { code:'SUP',    name:'Superior',               baseQuota:15, isCompat:(a,c,b)=>a>=1&&a<=2&&c<=3&&(a+c)<=4&&!(a===2&&c>2) },
+  { code:'SUP_T',  name:'Superior Triple',        baseQuota:10, isCompat:(a,c,b)=>a===3&&c<=1 },
+  { code:'SUP_VP', name:'Superior Vista Piscina', baseQuota:10, isCompat:(a,c,b)=>a>=1&&a<=2&&c<=3&&(a+c)<=4&&!(a===2&&c>2) },
+];
+
+// Precios base por periodos (se usan si no hay precio manual)
+const PERIODS = [
+  {from:'2026-05-01',to:'2026-05-17', EST:97, EST_T:107,SUP:105,SUP_T:115,SUP_VP:120},
+  {from:'2026-05-18',to:'2026-05-31', EST:157,EST_T:177,SUP:174,SUP_T:194,SUP_VP:189},
+  {from:'2026-06-01',to:'2026-06-14', EST:186,EST_T:206,SUP:205,SUP_T:225,SUP_VP:225},
+  {from:'2026-06-15',to:'2026-06-30', EST:210,EST_T:230,SUP:231,SUP_T:251,SUP_VP:251},
+  {from:'2026-07-01',to:'2026-07-15', EST:231,EST_T:256,SUP:257,SUP_T:282,SUP_VP:279},
+  {from:'2026-07-16',to:'2026-08-31', EST:263,EST_T:288,SUP:294,SUP_T:319,SUP_VP:316},
+  {from:'2026-09-01',to:'2026-09-09', EST:199,EST_T:219,SUP:220,SUP_T:240,SUP_VP:240},
+  {from:'2026-09-10',to:'2026-09-30', EST:173,EST_T:183,SUP:186,SUP_T:196,SUP_VP:206},
+  {from:'2026-10-01',to:'2026-10-24', EST:97, EST_T:107,SUP:105,SUP_T:115,SUP_VP:120},
+];
+
+/* ══════════════════════════════════
+   ESTADO — TODO en memoria + localStorage
+══════════════════════════════════ */
+function lsGet(k, def) { try { const v=localStorage.getItem(k); return v?JSON.parse(v):def; } catch(e){return def;} }
+function lsSet(k, v)   { try { localStorage.setItem(k, JSON.stringify(v)); } catch(e){} }
+
+// Datos persistentes
+let reservations = lsGet('hbv_res', []);
+let nextId       = lsGet('hbv_id',  1);
+// customPrices: { 'EST_2026-05-01': 97 }
+let customPrices = lsGet('hbv_prices', {});
+// customQuotas: { 'EST_2026-05-01': 15 }
+let customQuotas = lsGet('hbv_quotas', {});
+
+function saveAll() {
+  lsSet('hbv_res',    reservations);
+  lsSet('hbv_id',     nextId);
+  lsSet('hbv_prices', customPrices);
+  lsSet('hbv_quotas', customQuotas);
+}
+
+// Estado UI
+let counts       = {adults:1,children:0,babies:0};
+let breakfastOn  = false;
+let selectedRoom = null;
+let calYear=2026, calMonth=4, calRoomType='EST';
+let pcState = { prices:{y:2026,m:4}, quotas:{y:2026,m:4} };
+
+/* ══════════════════════════════════
+   HELPERS
+══════════════════════════════════ */
+function dStr(y,m,d){ return `${y}-${String(m+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`; }
+function daysInMonth(y,m){ return new Date(y,m+1,0).getDate(); }
+function isWeekend(y,m,d){ const day=new Date(y,m,d).getDay(); return day===0||day===6; }
+function isInSeason(ds){ return ds>=SEASON_START && ds<=SEASON_END; }
+function fmtDate(s){ return new Date(s+'T00:00:00').toLocaleDateString('es-ES',{day:'2-digit',month:'short',year:'numeric'}); }
+function fmtId(id){ return '#'+String(id).padStart(3,'0'); }
+function resStatus(r){ const t=todayStr(); return r.checkout<=t?'past':r.checkin<=t?'active':'upcoming'; }
+function todayStr(){ return new Date().toISOString().split('T')[0]; }
+function hl(text,q){ if(!q)return text; return text.replace(new RegExp('('+q.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+')','gi'),'<span class="match-hl">$1</span>'); }
+
+/* ══════════════════════════════════
+   MOTOR DE PRECIOS Y CUPOS
+══════════════════════════════════ */
+function getBasePrice(ds, code) {
+  if (!isInSeason(ds)) return null;
+  const p = PERIODS.find(p=>ds>=p.from&&ds<=p.to);
+  return p ? (p[code]??null) : null;
+}
+
+// Precio efectivo: manual > base
+function getPrice(ds, code) {
+  const key = code+'_'+ds;
+  if (customPrices[key] !== undefined) return Number(customPrices[key]);
+  return getBasePrice(ds, code);
+}
+
+// Cupo efectivo: manual > base
+function getQuota(ds, code) {
+  const key = code+'_'+ds;
+  if (customQuotas[key] !== undefined) return Number(customQuotas[key]);
+  const rt = ROOM_TYPES.find(r=>r.code===code);
+  return rt ? rt.baseQuota : 0;
+}
+
+function occupiedOnDay(ds, code) {
+  return reservations.filter(r=>r.roomCode===code&&r.checkin<=ds&&r.checkout>ds).length;
+}
+
+function availOnDay(ds, code) {
+  return Math.max(0, getQuota(ds, code) - occupiedOnDay(ds, code));
+}
+
+function minAvailInRange(cin, cout, code) {
+  let min=9999, d=new Date(cin+'T00:00:00'), end=new Date(cout+'T00:00:00');
+  while(d<end){ const ds=d.toISOString().split('T')[0]; min=Math.min(min,availOnDay(ds,code)); d.setDate(d.getDate()+1); }
+  return min===9999?0:min;
+}
+
+function calcStay(cin, cout, code, adults, withBF) {
+  let roomTotal=0,bfTotal=0,details=[],nights=0;
+  let d=new Date(cin+'T00:00:00'), end=new Date(cout+'T00:00:00');
+  while(d<end){
+    const ds=d.toISOString().split('T')[0];
+    const p=getPrice(ds,code);
+    if(p!==null){ roomTotal+=p; const bf=withBF?adults*BF_ADULT:0; bfTotal+=bf; details.push({ds,p,bf}); nights++; }
+    d.setDate(d.getDate()+1);
+  }
+  return {roomTotal,bfTotal,total:roomTotal+bfTotal,nights,details};
+}
+
+/* ══════════════════════════════════
+   TABS
+══════════════════════════════════ */
+function switchTab(name, btn) {
+  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('tab-'+name).classList.add('active');
+  btn.classList.add('active');
+  if(name==='calendar'){ renderCalTypeTabs(); renderCalendar(); }
+  if(name==='prices')   renderPCTable('prices');
+  if(name==='quotas')   renderPCTable('quotas');
+  if(name==='search')   doSearch();
+  if(name==='stats')    { setStatsYear(); renderStats(); }
+}
+
+/* ══════════════════════════════════
+   TABLA PRECIOS Y CUPOS
+══════════════════════════════════ */
+function navPC(mode, delta) {
+  let s=pcState[mode]; s.m+=delta;
+  if(s.m<0){s.m=11;s.y--;} if(s.m>11){s.m=0;s.y++;}
+  renderPCTable(mode);
+}
+
+function renderPCTable(mode) {
+  const isPrices = mode==='prices';
+  const {y,m} = pcState[mode];
+  const dim = daysInMonth(y,m);
+  const today = todayStr();
+  document.getElementById(mode+'-lbl').textContent = MONTHS[m]+' '+y;
+
+  // Construir tabla
+  let html = `<table class="pc-table"><thead><tr><th class="apt-th">Apartamento</th>`;
+  for(let d=1;d<=dim;d++){
+    const ds=dStr(y,m,d), we=isWeekend(y,m,d), isT=ds===today;
+    const dl=DAY_LETTERS[new Date(y,m,d).getDay()];
+    html+=`<th class="${we?'wk':''}${isT?' td-today':''}">${d}<br><span style="font-weight:300;font-size:.55rem">${dl}</span></th>`;
+  }
+  html+=`</tr></thead><tbody>`;
+
+  ROOM_TYPES.forEach(rt=>{
+    html+=`<tr><td class="apt-td">${rt.name}</td>`;
+    for(let d=1;d<=dim;d++){
+      const ds=dStr(y,m,d), inS=isInSeason(ds), we=isWeekend(y,m,d), isT=ds===today;
+      const key=rt.code+'_'+ds;
+      const hasCustom = isPrices ? customPrices[key]!==undefined : customQuotas[key]!==undefined;
+      let val;
+      if(!inS){ val=''; }
+      else if(isPrices){ val=getPrice(ds,rt.code)??''; }
+      else{ val=getQuota(ds,rt.code); }
+      const cls=['pc-cell', !inS?'out':'', we?'wk':'', hasCustom?'edited':''].filter(Boolean).join(' ');
+      if(!inS){
+        html+=`<td class="${we?'wk':''}"><input class="${cls}" type="text" value="—" disabled></td>`;
+      } else {
+        html+=`<td class="${we?'wk':''}${isT?' td-today':''}"><input class="${cls}" type="number" min="0" step="1" value="${val}" data-mode="${mode}" data-code="${rt.code}" data-ds="${ds}" onchange="onCellEdit(this)" onfocus="this.select()"></td>`;
+      }
+    }
+    html+=`</tr>`;
+  });
+  html+=`</tbody></table>`;
+  document.getElementById(mode+'-wrap').innerHTML=html;
+}
+
+function onCellEdit(inp) {
+  const {mode,code,ds} = inp.dataset;
+  const val = parseFloat(inp.value);
+  if(isNaN(val)||val<0){ inp.value=''; return; }
+  const key = code+'_'+ds;
+  if(mode==='prices') customPrices[key]=val;
+  else customQuotas[key]=Math.round(val);
+  inp.classList.add('edited');
+  // Actualizar inmediatamente el sidebar de cupos si estamos en quotas
+  renderAll();
+}
+
+function savePC(mode) {
+  // Leer todos los inputs editables de la tabla activa y confirmar en memoria
+  document.querySelectorAll(`#${mode}-wrap input[data-mode="${mode}"]`).forEach(inp=>{
+    const v=parseFloat(inp.value);
+    if(!isNaN(v)&&v>=0){
+      const key=inp.dataset.code+'_'+inp.dataset.ds;
+      if(mode==='prices') customPrices[key]=v;
+      else customQuotas[key]=Math.round(v);
+      inp.classList.add('edited');
+    }
+  });
+  saveAll();
+  renderAll();
+  const ok=document.getElementById(mode+'-ok');
+  ok.classList.add('show');
+  setTimeout(()=>ok.classList.remove('show'),2500);
+}
+
+/* ══════════════════════════════════
+   FORMULARIO RESERVA
+══════════════════════════════════ */
+function changeCount(type,delta){
+  const nv=counts[type]+delta;
+  if(nv<0)return;
+  if(type==='adults'&&nv>3)return;
+  if(type==='children'&&nv>3)return;
+  if(type==='babies'&&nv>2)return;
+  counts[type]=nv;
+  document.getElementById(type+'-val').textContent=nv;
+  renderAgesFields(); onFormChange();
+}
+
+function renderAgesFields(){
+  const sec=document.getElementById('ages-section'), grid=document.getElementById('ages-grid');
+  if(!counts.children){sec.style.display='none';grid.innerHTML='';return;}
+  sec.style.display='block';
+  const prev=[...grid.querySelectorAll('select')].map(s=>s.value);
+  grid.innerHTML='';
+  for(let i=0;i<counts.children;i++){
+    const d=document.createElement('div'); d.className='age-field';
+    const l=document.createElement('label'); l.textContent=`Niño ${i+1}`;
+    const s=document.createElement('select'); s.id=`age-${i}`;
+    s.innerHTML='<option value="">Edad…</option>';
+    for(let a=2;a<=14;a++) s.innerHTML+=`<option value="${a}">${a} años</option>`;
+    if(prev[i]) s.value=prev[i];
+    d.appendChild(l); d.appendChild(s); grid.appendChild(d);
+  }
+}
+
+function getChildAges(){ return Array.from({length:counts.children},(_,i)=>document.getElementById(`age-${i}`)?.value||''); }
+
+function toggleBreakfast(){
+  breakfastOn=!breakfastOn;
+  document.getElementById('bf-switch').className='toggle-sw'+(breakfastOn?' on':'');
+  document.getElementById('bf-toggle').className='toggle-row'+(breakfastOn?' active':'');
+  onFormChange();
+}
+
+function onFormChange(){
+  const cin=document.getElementById('f-checkin').value, cout=document.getElementById('f-checkout').value;
+  const wrap=document.getElementById('room-options-wrap'), preview=document.getElementById('price-preview');
+  const btn=document.getElementById('btn-book'), ind=document.getElementById('avail-ind');
+  wrap.style.display='none'; preview.classList.remove('show'); btn.style.display='none'; selectedRoom=null;
+
+  if(!cin||!cout||cin>=cout){ind.classList.remove('show');return;}
+  if(!isInSeason(cin)){ind.className='avail-ind show warn';document.getElementById('avail-text').textContent='Fuera de temporada (1 mayo – 24 octubre 2026)';return;}
+  const coD=new Date(cout+'T00:00:00'), lnD=new Date(coD); lnD.setDate(lnD.getDate()-1);
+  if(!isInSeason(lnD.toISOString().split('T')[0])){ind.className='avail-ind show warn';document.getElementById('avail-text').textContent='Salida máxima: 25 octubre 2026';return;}
+  const nights=Math.round((coD-new Date(cin+'T00:00:00'))/86400000);
+  ind.className='avail-ind show ok'; document.getElementById('avail-text').textContent=`${nights} noche${nights>1?'s':''} · ${fmtDate(cin)} → ${fmtDate(cout)}`;
+
+  const {adults:a,children:c,babies:b}=counts;
+  const eligible=ROOM_TYPES.filter(rt=>rt.isCompat(a,c,b));
+  if(!eligible.length){ind.className='avail-ind show warn';document.getElementById('avail-text').textContent='Sin apartamento con esa distribución de ocupantes';return;}
+
+  const optEl=document.getElementById('room-options'); optEl.innerHTML='';
+  eligible.forEach(rt=>{
+    const minA=minAvailInRange(cin,cout,rt.code), pd=calcStay(cin,cout,rt.code,a,breakfastOn), avail=minA>0;
+    const div=document.createElement('div');
+    div.className='room-option'+(avail?'':' unavailable');
+    div.dataset.code=rt.code;
+    if(avail) div.onclick=()=>selectRoom(rt.code,pd,a,c,b,nights);
+    div.innerHTML=`<div class="ro-radio"></div>
+      <div class="ro-header"><div class="ro-name">${rt.name}</div>
+      <div><div class="ro-price">${pd.total} €</div>
+      <div class="ro-price-sub">${pd.roomTotal} € hab.${breakfastOn?` + ${pd.bfTotal} € desay.`:''}</div></div></div>
+      <div class="ro-tags">
+        ${avail?`<span class="ro-tag ok">✓ ${minA} libre${minA>1?'s':''}</span>`:'<span class="ro-tag full">✗ Sin disponibilidad</span>'}
+        ${breakfastOn?`<span class="ro-tag">☕ +${a*BF_ADULT*nights} €</span>`:''}
+      </div>`;
+    optEl.appendChild(div);
+  });
+  wrap.style.display='block';
+}
+
+function selectRoom(code,pd,a,c,b,nights){
+  selectedRoom={code,pd};
+  document.querySelectorAll('.room-option').forEach(el=>el.classList.toggle('selected',el.dataset.code===code));
+  let html=`<div class="pr bold"><span>🛏 Habitación · ${nights} noche${nights>1?'s':''}</span></div>`;
+  const seg={}; pd.details.forEach(d=>{seg[d.p]=(seg[d.p]||0)+1;});
+  for(const[p,n] of Object.entries(seg).sort((a,b)=>+a[0]-+b[0]))
+    html+=`<div class="pr sub"><span>${n}n × ${p} €</span><span>${n*+p} €</span></div>`;
+  if(breakfastOn&&pd.bfTotal>0){
+    html+=`<hr class="pr-div"><div class="pr bold"><span>☕ Desayuno</span></div>
+    <div class="pr sub"><span>${a} adulto${a>1?'s':''} × ${BF_ADULT}€ × ${nights}n</span><span>${pd.bfTotal} €</span></div>`;
+  }
+  if(b>0) html+=`<hr class="pr-div"><div class="pr"><span>🍼 Cuna × ${b} — incluida</span><span>0 €</span></div>`;
+  document.getElementById('price-breakdown').innerHTML=html;
+  document.getElementById('price-total').textContent=pd.total+' €';
+  document.getElementById('price-preview').classList.add('show');
+  document.getElementById('btn-book').style.display='block';
+  document.getElementById('e-room').classList.remove('show');
+}
+
+/* ══════════════════════════════════
+   VALIDACIÓN Y RESERVA
+══════════════════════════════════ */
+function validate(){
+  let ok=true;
+  [{id:'f-nombre',err:'e-nombre',fn:v=>v.trim().length>0},
+   {id:'f-apellido',err:'e-apellido',fn:v=>v.trim().length>0},
+   {id:'f-email',err:'e-email',fn:v=>/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.trim())},
+   {id:'f-tel',err:'e-tel',fn:v=>v.trim().length>=6},
+   {id:'f-checkin',err:'e-checkin',fn:v=>v.length>0},
+   {id:'f-checkout',err:'e-checkout',fn:v=>v.length>0&&v>document.getElementById('f-checkin').value}
+  ].forEach(f=>{
+    const el=document.getElementById(f.id), errEl=document.getElementById(f.err), valid=f.fn(el.value);
+    el.classList.toggle('err',!valid); errEl.classList.toggle('show',!valid); if(!valid)ok=false;
+  });
+  if(counts.children>0){
+    const filled=getChildAges().every(a=>a!=='');
+    document.getElementById('e-ages').classList.toggle('show',!filled);
+    if(!filled)ok=false;
+  }
+  if(!selectedRoom){document.getElementById('e-room').classList.add('show');ok=false;}
+  return ok;
+}
+
+async function makeReservation(){
+  if(!validate())return;
+  const cin=document.getElementById('f-checkin').value, cout=document.getElementById('f-checkout').value;
+  const nombre=document.getElementById('f-nombre').value.trim(), apellido=document.getElementById('f-apellido').value.trim();
+  const email=document.getElementById('f-email').value.trim(), tel=document.getElementById('f-tel').value.trim();
+  const rt=ROOM_TYPES.find(r=>r.code===selectedRoom.code), pd=selectedRoom.pd;
+  if(minAvailInRange(cin,cout,selectedRoom.code)<=0){alert('Ya no hay disponibilidad. Selecciona otra opción.');return;}
+  const r={id:nextId++,nombre,apellido,guest:`${nombre} ${apellido}`,email,tel,
+    checkin:cin,checkout:cout,nights:pd.nights,
+    adults:counts.adults,children:counts.children,babies:counts.babies,childAges:getChildAges(),
+    roomCode:selectedRoom.code,roomName:rt.name,
+    breakfast:breakfastOn,total:pd.total,roomTotal:pd.roomTotal,bfTotal:pd.bfTotal};
+  reservations.push(r); saveAll(); renderAll(); resetForm();
+  showEstatus('sending',r);
+  await sendEmail(r);
+}
+
+function resetForm(){
+  ['f-nombre','f-apellido','f-email','f-tel','f-checkin','f-checkout'].forEach(id=>{
+    const el=document.getElementById(id); el.value=''; el.classList.remove('err');
+  });
+  ['e-nombre','e-apellido','e-email','e-tel','e-checkin','e-checkout','e-ages','e-room'].forEach(id=>document.getElementById(id).classList.remove('show'));
+  counts={adults:1,children:0,babies:0};
+  ['adults','children','babies'].forEach(t=>document.getElementById(t+'-val').textContent=counts[t]);
+  breakfastOn=false;
+  document.getElementById('bf-switch').className='toggle-sw';
+  document.getElementById('bf-toggle').className='toggle-row';
+  document.getElementById('price-preview').classList.remove('show');
+  document.getElementById('avail-ind').classList.remove('show');
+  document.getElementById('room-options-wrap').style.display='none';
+  document.getElementById('btn-book').style.display='none';
+  document.getElementById('ages-section').style.display='none';
+  document.getElementById('ages-grid').innerHTML='';
+  selectedRoom=null;
+}
+
+function showEstatus(state,r,payload){
+  const el=document.getElementById('estatus'); el.classList.add('show');
+  if(state==='sending') el.innerHTML=`<div class="estatus-sending"><span class="spinner"></span>Reserva <strong>${fmtId(r.id)}</strong> guardada. Enviando emails…</div>`;
+  else if(state==='done') el.innerHTML=`<div class="estatus-done">✓ Reserva <strong>${fmtId(r.id)}</strong> — <strong>${r.guest}</strong> · ${r.roomName}<br>📧 Confirmación enviada a <strong>${r.email}</strong><br><strong>${fmtDate(r.checkin)} → ${fmtDate(r.checkout)} · ${r.nights}n · ${r.total} €</strong></div>`;
+  else if(state==='copy') el.innerHTML=`<div class="estatus-err">✓ Reserva <strong>${fmtId(r.id)}</strong> guardada correctamente.<br>⚠️ Email automático no disponible en este entorno.<br><details><summary style="cursor:pointer;font-weight:600;margin-top:5px">Ver datos de la reserva</summary><pre style="font-size:.7rem;margin-top:6px;white-space:pre-wrap">${JSON.stringify(payload,null,2)}</pre></details></div>`;
+  else el.innerHTML=`<div class="estatus-err">✓ Reserva <strong>${fmtId(r.id)}</strong> guardada · ⚠️ ${state}</div>`;
+}
+
+/* ══════════════════════════════════
+   EMAIL — Make Webhook
+══════════════════════════════════ */
+async function sendEmail(r){
+  const ages=r.childAges.length?` (edades: ${r.childAges.join(', ')} años)`:'';
+  const pax=`${r.adults} adulto${r.adults>1?'s':''}${r.children>0?`, ${r.children} niño${r.children>1?'s':''}${ages}`:''}${r.babies>0?`, ${r.babies} bebé${r.babies>1?'s':''} (cuna incl.)`:''}`;
+  const payload={reservation_id:fmtId(r.id),guest_name:r.guest,client_email:r.email,phone:r.tel,
+    room_name:r.roomName,checkin:fmtDate(r.checkin),checkout:fmtDate(r.checkout),
+    nights:r.nights,pax,breakfast:r.breakfast?`Sí — ${r.bfTotal} €`:'No',
+    room_total:r.roomTotal+' €',total:r.total+' €',hotel_email:RESERVAS_EMAIL};
+  try{
+    const res=await fetch(MAKE_WEBHOOK,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
+    res.ok ? showEstatus('done',r) : showEstatus('Error '+res.status,r);
+  }catch(e){ showEstatus('copy',r,payload); }
+}
+
+function cancelReservation(id){
+  if(!confirm('¿Cancelar reserva '+fmtId(id)+'?'))return;
+  reservations=reservations.filter(r=>r.id!==id); saveAll(); renderAll(); doSearch();
+}
+
+/* ══════════════════════════════════
+   CUPOS HOY + LISTA RESERVAS
+══════════════════════════════════ */
+function renderCupos(){
+  const today=todayStr(); let tf=0,tt=0;
+  document.getElementById('cupos-panel').innerHTML=ROOM_TYPES.map(rt=>{
+    const q=getQuota(today,rt.code), occ=occupiedOnDay(today,rt.code), free=q-occ;
+    const pct=Math.round(occ/q*100)||0;
+    const color=free===0?'#991b1b':free<=3?'#b45309':free<=7?'#2E7D5C':'#1a5c3a';
+    tf+=Math.max(0,free); tt+=q;
+    return `<div class="cupos-row"><div class="cupos-name">${rt.name}</div><div class="cupos-bar"><div class="cupos-fill" style="width:${pct}%;background:${color}"></div></div><div class="cupos-nums">${Math.max(0,free)}/${q} libres</div></div>`;
+  }).join('');
+  document.getElementById('occ-display').textContent=`${tf}/${tt} libres hoy`;
+}
+
+function renderResList(){
+  const el=document.getElementById('res-list');
+  if(!reservations.length){el.innerHTML='<div class="empty">No hay reservas aún</div>';return;}
+  el.innerHTML=[...reservations].sort((a,b)=>b.id-a.id).slice(0,15).map(r=>{
+    const pax=`${r.adults}A${r.children>0?'+'+r.children+'N':''}${r.babies>0?'+'+r.babies+'B':''}`;
+    return `<div class="res-item"><div class="rh"><div><div class="rname">${r.guest} <span class="rid">${fmtId(r.id)}</span></div><div class="rmeta">${r.roomName} · ${fmtDate(r.checkin)}→${fmtDate(r.checkout)} · ${r.nights}n</div></div><span class="rprice">${r.total} €</span></div><div class="rtags"><span class="rtag">👥 ${pax}</span>${r.breakfast?'<span class="rtag bf">☕</span>':''}<button class="btn-cancel" onclick="cancelReservation(${r.id})">Cancelar</button></div></div>`;
+  }).join('');
+}
+
+/* ══════════════════════════════════
+   CALENDARIO
+══════════════════════════════════ */
+function renderCalTypeTabs(){
+  document.getElementById('cal-type-tabs').innerHTML=ROOM_TYPES.map(rt=>
+    `<button class="cal-type-btn${rt.code===calRoomType?' active':''}" onclick="setCalType('${rt.code}',this)">${rt.name}</button>`
+  ).join('');
+}
+function setCalType(code,btn){calRoomType=code;document.querySelectorAll('.cal-type-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');renderCalendar();}
+function navMonth(d){calMonth+=d;if(calMonth<0){calMonth=11;calYear--;}if(calMonth>11){calMonth=0;calYear++;}renderCalendar();}
+function avCls(a,past,inS){if(!inS)return 'av-noseason';if(past)return 'av-past';if(a===0)return 'av-0';if(a<=2)return 'av-1';if(a<=5)return 'av-4';if(a<=9)return 'av-7';return 'av-10';}
+
+function renderCalendar(){
+  document.getElementById('cal-month-label').textContent=`${MONTHS[calMonth]} ${calYear}`;
+  const tbody=document.getElementById('cal-body'); tbody.innerHTML='';
+  const today=todayStr(), first=new Date(calYear,calMonth,1), off=(first.getDay()+6)%7, dim=daysInMonth(calYear,calMonth);
+  let cells=[]; for(let i=0;i<off;i++)cells.push(null); for(let d=1;d<=dim;d++)cells.push(d);
+  while(cells.length%7!==0)cells.push(null);
+  for(let row=0;row<cells.length/7;row++){
+    const tr=document.createElement('tr');
+    for(let col=0;col<7;col++){
+      const day=cells[row*7+col]; const td=document.createElement('td'); td.className='cal-cell';
+      if(!day){td.innerHTML='<div class="day-box empty-day"></div>';}
+      else{
+        const ds=dStr(calYear,calMonth,day), isPast=ds<today, inS=isInSeason(ds);
+        const av=inS?availOnDay(ds,calRoomType):0;
+        const lbl=!inS?'':isPast?'':av===0?'lleno':av===1?'libre':'libres';
+        td.innerHTML=`<div class="day-box ${avCls(av,isPast,inS)}${ds===today?' today-mark':''}" title="${ds}: ${!inS?'Fuera temporada':isPast?'Pasado':av+' libres'}"><span class="day-num">${day}</span><span class="day-avail">${!inS?'—':isPast?'—':av}</span>${lbl?`<span class="day-label">${lbl}</span>`:''}</div>`;
+      }
+      tr.appendChild(td);
+    }
+    tbody.appendChild(tr);
+  }
+}
+
+/* ══════════════════════════════════
+   BUSCADOR
+══════════════════════════════════ */
+function doSearch(){
+  const q=(document.getElementById('search-input').value||'').trim().toLowerCase();
+  let res=[...reservations];
+  if(q) res=res.filter(r=>fmtId(r.id).toLowerCase().includes(q)||(r.guest||'').toLowerCase().includes(q)||(r.email||'').toLowerCase().includes(q));
+  res.sort((a,b)=>b.checkin.localeCompare(a.checkin));
+  document.getElementById('search-count').innerHTML=q?`<strong>${res.length}</strong> resultado${res.length!==1?'s':''} para "<strong>${q}</strong>"`:`<strong>${reservations.length}</strong> reserva${reservations.length!==1?'s':''} en total`;
+  const tbody=document.getElementById('search-tbody');
+  if(!res.length){tbody.innerHTML=`<tr><td colspan="13" style="text-align:center;padding:20px;color:var(--muted);font-style:italic">${q?'Sin resultados':'No hay reservas aún'}</td></tr>`;return;}
+  tbody.innerHTML=res.map(r=>{
+    const st=resStatus(r), badge=st==='active'?'<span class="badge badge-active">● Activa</span>':st==='upcoming'?'<span class="badge badge-upcoming">↑ Próxima</span>':'<span class="badge badge-past">✓ Pasada</span>';
+    const pax=`${r.adults}A${r.children>0?'+'+r.children+'N':''}${r.babies>0?'+'+r.babies+'B':''}`;
+    return `<tr><td><span class="id-badge">${hl(fmtId(r.id),q)}</span></td><td><strong>${hl(r.guest||'',q)}</strong></td><td style="font-size:.74rem">${hl(r.email||'—',q)}</td><td style="font-size:.74rem">${r.tel||'—'}</td><td>${r.roomName||'—'}</td><td>${fmtDate(r.checkin)}</td><td>${fmtDate(r.checkout)}</td><td style="text-align:center">${r.nights}</td><td style="text-align:center">${pax}</td><td style="text-align:center">${r.breakfast?'☕ Sí':'—'}</td><td class="td-price" style="text-align:right">${r.total} €</td><td>${badge}</td><td>${st!=='past'?`<button class="btn-sm" onclick="cancelReservation(${r.id})">Cancelar</button>`:'—'}</td></tr>`;
+  }).join('');
+}
+function clearSearch(){document.getElementById('search-input').value='';doSearch();}
+
+/* ══════════════════════════════════
+   ESTADÍSTICAS
+══════════════════════════════════ */
+function setStatsYear(){document.getElementById('stats-from').value='2026-05-01';document.getElementById('stats-to').value='2026-10-24';}
+function setStatsMonth(){const n=new Date(),y=n.getFullYear(),m=String(n.getMonth()+1).padStart(2,'0'),l=new Date(y,n.getMonth()+1,0).getDate();document.getElementById('stats-from').value=`${y}-${m}-01`;document.getElementById('stats-to').value=`${y}-${m}-${l}`;}
+
+function renderStats(){
+  const from=document.getElementById('stats-from').value, to=document.getElementById('stats-to').value;
+  if(!from||!to)return;
+  const fil=reservations.filter(r=>r.checkin<=to&&r.checkout>from);
+  const total=fil.reduce((s,r)=>s+r.total,0), nights=fil.reduce((s,r)=>s+r.nights,0);
+  const avg=fil.length?Math.round(total/fil.length):0, bfCnt=fil.filter(r=>r.breakfast).length;
+  document.getElementById('kpi-total').textContent=total.toLocaleString('es-ES')+' €';
+  document.getElementById('kpi-tsub').textContent=`Hab: ${fil.reduce((s,r)=>s+(r.roomTotal||r.total),0).toLocaleString('es-ES')} € · Desay: ${fil.reduce((s,r)=>s+(r.bfTotal||0),0).toLocaleString('es-ES')} €`;
+  document.getElementById('kpi-count').textContent=fil.length; document.getElementById('kpi-csub').textContent=`${bfCnt} con desayuno`;
+  document.getElementById('kpi-nights').textContent=nights; document.getElementById('kpi-nsub').textContent=fil.length?`${Math.round(nights/fil.length)} noches/reserva`:'';
+  document.getElementById('kpi-avg').textContent=avg+' €'; document.getElementById('kpi-asub').textContent=nights?`${Math.round(total/nights)} €/noche`:'';
+  const mm={};
+  fil.forEach(r=>{const k=r.checkin.substring(0,7);if(!mm[k])mm[k]={res:0,n:0,rT:0,bT:0,t:0};mm[k].res++;mm[k].n+=r.nights;mm[k].rT+=(r.roomTotal||r.total);mm[k].bT+=(r.bfTotal||0);mm[k].t+=r.total;});
+  const keys=Object.keys(mm).sort(), tbody=document.getElementById('stats-tbody'), tfoot=document.getElementById('stats-tfoot');
+  if(!keys.length){tbody.innerHTML=`<tr><td colspan="7" style="text-align:center;padding:20px;color:var(--muted);font-style:italic">Sin reservas en el período</td></tr>`;tfoot.innerHTML='';renderBarChart({});return;}
+  tbody.innerHTML=keys.map(k=>{const d=mm[k],pct=total?Math.round(d.t/total*100):0,[,mo]=k.split('-');return `<tr><td><strong>${MONTHS[parseInt(mo)-1]} ${k.split('-')[0]}</strong></td><td class="r">${d.res}</td><td class="r">${d.n}</td><td class="r">${d.rT.toLocaleString('es-ES')} €</td><td class="r">${d.bT.toLocaleString('es-ES')} €</td><td class="r" style="font-weight:600">${d.t.toLocaleString('es-ES')} €</td><td><div style="font-size:.68rem;color:var(--muted);margin-bottom:2px">${pct}%</div><div class="bar-wrap2"><div class="bar-fill2" style="width:${pct}%"></div></div></td></tr>`;}).join('');
+  tfoot.innerHTML=`<tr><td><strong>TOTAL</strong></td><td class="r">${fil.length}</td><td class="r">${nights}</td><td class="r">${fil.reduce((s,r)=>s+(r.roomTotal||r.total),0).toLocaleString('es-ES')} €</td><td class="r">${fil.reduce((s,r)=>s+(r.bfTotal||0),0).toLocaleString('es-ES')} €</td><td class="r" style="color:var(--gold)">${total.toLocaleString('es-ES')} €</td><td></td></tr>`;
+  renderBarChart(mm);
+}
+function renderBarChart(mm){
+  const chart=document.getElementById('bar-chart'); chart.innerHTML='';
+  const keys=Object.keys(mm).sort(); if(!keys.length){chart.innerHTML='<div style="color:var(--muted);font-size:.76rem;padding:14px">Sin datos</div>';return;}
+  const maxV=Math.max(...keys.map(k=>mm[k].t),1);
+  keys.forEach(k=>{const d=mm[k],[,mo]=k.split('-'),pct=Math.round(d.t/maxV*100);const col=document.createElement('div');col.className='bar-col';col.innerHTML=`<div class="bar-rect" style="height:${Math.max(pct,2)}%"><div class="bar-tip">${MONTHS_SHORT[parseInt(mo)-1]}: ${d.t.toLocaleString('es-ES')} €</div></div><div class="bar-lbl">${MONTHS_SHORT[parseInt(mo)-1]}</div>`;chart.appendChild(col);});
+}
+
+/* ══════════════════════════════════
+   INIT
+══════════════════════════════════ */
+function renderAll(){ renderCupos(); renderResList(); }
+
+document.getElementById('f-checkin').min='2026-05-01';
+document.getElementById('f-checkout').min='2026-05-02';
+document.getElementById('f-checkin').max='2026-10-24';
+document.getElementById('f-checkout').max='2026-10-25';
+setStatsYear();
+renderAll();
+</script>
+</body>
+</html>
